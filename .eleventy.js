@@ -1,7 +1,7 @@
 module.exports = function(eleventyConfig) {
   // Assets passthrough — usar assets da raiz (já versionados no git)
   eleventyConfig.addPassthroughCopy({ "wp-content": "wp-content" });
-  eleventyConfig.addPassthroughCopy({ "wp-includes": "wp-includes" });
+  eleventyConfig.addPassthroughCopy({ "src/assets": "assets" });
   eleventyConfig.addPassthroughCopy({ "src/CNAME": "CNAME" });
   eleventyConfig.addPassthroughCopy({ "src/robots.txt": "robots.txt" });
   eleventyConfig.addPassthroughCopy({ "src/sitemap.xml": "sitemap.xml" });
