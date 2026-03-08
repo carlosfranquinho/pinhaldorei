@@ -1,81 +1,58 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-PT" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
   {% if description %}<meta name="description" content="{{ description }}">{% endif %}
   <title>{{ title }} — Pinhal do Rei</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap">
-
-  <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
-  <link rel="stylesheet" href="/assets/css/otw_shortcode.css">
-  <link rel="stylesheet" href="/assets/css/general_foundicons.css">
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
+  <link rel="stylesheet" href="/assets/css/site.css">
 </head>
+<body class="{{ bodyClass | default('') }}">
 
-<body class="{{ bodyClass | default('page blog-post') }}">
-<div class="wrapper">
-
-  <header class="header">
-    <nav class="navbar {{ navClass | default('navbar-not-transparent') }}">
-      <div class="container">
-        <div class="navbar-header">
-          <div class="title-logo-wrapper">
-            <a class="navbar-brand" href="/" title="Pinhal do Rei">
-              <p>Pinhal do Rei</p>
-            </a>
-          </div>
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navigation">
-            <span class="sr-only">Menu</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div id="main-navigation" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            {% for item in navigation.main %}
-            <li class="menu-item">
-              <a href="{{ item.url }}" title="{{ item.title }}">
-                <i class="{{ item.icon }}"></i>{{ item.title }}
-              </a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
+  <header id="site-header">
+    <nav>
+      <ul>
+        <li><a href="/" class="site-brand">Pinhal do Rei</a></li>
+      </ul>
+      <ul>
+        {% for item in navigation.main %}
+        <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ul>
+      <ul>
+        <li><button id="menu-toggle" class="outline secondary" aria-label="Menu">☰</button></li>
+      </ul>
+    </nav>
+    <nav id="mobile-menu" hidden>
+      <ul>
+        {% for item in navigation.main %}
+        <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ul>
     </nav>
   </header>
 
   {{ content | safe }}
 
-  <footer class="footer">
-    <div class="container">
-      <div class="hestia-bottom-footer-content">
-        <ul class="footer-menu pull-left">
+  <footer>
+    <div>
+      <nav>
+        <ul>
           {% for item in navigation.footer %}
-          <li><a href="{{ item.url }}"><i class="{{ item.icon }}"></i>{{ item.title }}</a></li>
+          <li><a href="{{ item.url }}">{{ item.title }}</a></li>
           {% endfor %}
         </ul>
-        <div class="copyright pull-right">Pinhal do Rei</div>
-      </div>
+      </nav>
+      <small>Pinhal do Rei</small>
     </div>
   </footer>
 
-</div>
-
-<button class="hestia-scroll-to-top" aria-label="Voltar ao topo">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" width="12" height="20">
-    <path d="M177 255.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 351.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 425.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1zm-34-192L7 199.7c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l96.4-96.4 96.4 96.4c9.4 9.4 24.6 9.4 33.9 0l22.6-22.6c9.4-9.4 9.4-24.6 0-33.9l-136-136c-9.2-9.4-24.4-9.4-33.8 0z"/>
-  </svg>
-</button>
-
-<script src="/assets/js/jquery.min.js"></script>
-<script src="/assets/js/bootstrap.min.js"></script>
-<script src="/assets/js/site.js"></script>
+  <button id="scroll-top" aria-label="Voltar ao topo" title="Voltar ao topo">↑</button>
+  <script src="/assets/js/site.js"></script>
 </body>
 </html>

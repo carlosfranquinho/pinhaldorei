@@ -1,27 +1,13 @@
 ---
 layout: layouts/base.njk
 ---
-<div id="primary" class="page-header header-small">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-10 col-md-offset-1 text-center">
-        <h1 class="hestia-title">{{ title }}</h1>
-      </div>
-    </div>
-  </div>
-  <div class="header-filter" style="background-image: url('{{ background_image | default("/wp-content/uploads/2017/12/geral.jpg") }}');"></div>
-</div>
-
-<div class="main main-raised">
-  <div class="blog-post">
-    <div class="container">
-      <article class="section section-text">
-        <div class="row">
-          <div class="col-md-8 page-content-wrap col-md-offset-2">
-            {{ content | safe }}
-          </div>
-        </div>
-      </article>
-    </div>
+<div class="page-hero" style="--hero-bg: url('{{ background_image | default("/wp-content/uploads/2017/12/geral.jpg") }}');">
+  <div class="hero-content">
+    <h1>{{ title }}</h1>
   </div>
 </div>
+<main class="container">
+  <article>
+    {{ content | safe }}
+  </article>
+</main>

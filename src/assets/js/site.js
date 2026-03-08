@@ -1,28 +1,18 @@
-(function($) {
-  // Navbar: add scrolled class when not at top
-  $(window).on('scroll', function() {
-    if ($(this).scrollTop() > 60) {
-      $('.navbar').addClass('navbar-scrolled');
-    } else {
-      $('.navbar').removeClass('navbar-scrolled');
-    }
+// Mobile menu toggle
+const toggle = document.getElementById('menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+if (toggle && mobileMenu) {
+  toggle.addEventListener('click', () => {
+    const hidden = mobileMenu.hasAttribute('hidden');
+    mobileMenu.toggleAttribute('hidden', !hidden);
   });
+}
 
-  // Scroll to top button
-  $(window).on('scroll', function() {
-    if ($(this).scrollTop() > 300) {
-      $('.hestia-scroll-to-top').addClass('visible');
-    } else {
-      $('.hestia-scroll-to-top').removeClass('visible');
-    }
+// Scroll to top
+const scrollBtn = document.getElementById('scroll-top');
+if (scrollBtn) {
+  window.addEventListener('scroll', () => {
+    scrollBtn.classList.toggle('visible', window.scrollY > 400);
   });
-  $('.hestia-scroll-to-top').on('click', function() {
-    $('html, body').animate({ scrollTop: 0 }, 500);
-  });
-
-  // Parallax header
-  $(window).on('scroll', function() {
-    var scrolled = $(this).scrollTop();
-    $('.header-filter').css('transform', 'translateY(' + (scrolled * 0.3) + 'px)');
-  });
-})(jQuery);
+  scrollBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+}
