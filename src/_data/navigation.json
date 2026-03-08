@@ -1,0 +1,10 @@
+{
+  "main": [
+    { "title": "Lugares e Recantos", "url": "/lugares-recantos/", "icon": "fa fa-map-signs" },
+    { "title": "Histórias e Personagens", "url": "/historias-personagens/", "icon": "fa fa-user-o" },
+    { "title": "Fauna e Flora", "url": "/fauna-flora-do-pinhal-do-rei/", "icon": "fa fa-paw" }
+  ],
+  "footer": [
+    { "title": "Acerca", "url": "/acerca/", "icon": "dashicons dashicons-menu" }
+  ]
+}
