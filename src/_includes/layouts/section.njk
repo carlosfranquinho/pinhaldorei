@@ -1,9 +1,10 @@
 ---
 layout: layouts/base.njk
+bodyClass: layout-section
 ---
 <div class="page-hero" style="--hero-bg: url('{{ background_image | default("/wp-content/uploads/2017/12/geral.jpg") }}');">
   <div class="hero-content">
-    <h1>{{ title }}</h1>
+    <h1>{{ title | safe }}</h1>
   </div>
 </div>
 <main class="container">

@@ -10,15 +10,15 @@ module.exports = function(eleventyConfig) {
   // Collections for section child listing
   eleventyConfig.addCollection("lugares", col =>
     col.getFilteredByGlob("src/lugares-recantos/**/*.html")
-       .filter(p => !p.inputPath.endsWith("lugares-recantos/index.html")));
+       .filter(p => !p.inputPath.endsWith("lugares-recantos/index.html") && p.data.title));
 
   eleventyConfig.addCollection("historias", col =>
     col.getFilteredByGlob("src/historias-personagens/**/*.html")
-       .filter(p => !p.inputPath.endsWith("historias-personagens/index.html")));
+       .filter(p => !p.inputPath.endsWith("historias-personagens/index.html") && p.data.title));
 
   eleventyConfig.addCollection("fauna", col =>
     col.getFilteredByGlob("src/fauna-flora-do-pinhal-do-rei/**/*.html")
-       .filter(p => !p.inputPath.endsWith("fauna-flora-do-pinhal-do-rei/index.html")));
+       .filter(p => !p.inputPath.endsWith("fauna-flora-do-pinhal-do-rei/index.html") && p.data.title));
 
   return {
     dir: {

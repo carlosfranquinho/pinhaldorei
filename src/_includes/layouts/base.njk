@@ -8,7 +8,8 @@
   <title>{{ title }} — Pinhal do Rei</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css">
   <link rel="stylesheet" href="/assets/css/site.css">
 </head>
@@ -25,7 +26,7 @@
         {% endfor %}
       </ul>
       <ul>
-        <li><button id="menu-toggle" class="outline secondary" aria-label="Menu">☰</button></li>
+        <li><button id="menu-toggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button></li>
       </ul>
     </nav>
     <nav id="mobile-menu" hidden>
@@ -40,19 +41,47 @@
   {{ content | safe }}
 
   <footer>
-    <div>
-      <nav>
-        <ul>
-          {% for item in navigation.footer %}
-          <li><a href="{{ item.url }}">{{ item.title }}</a></li>
-          {% endfor %}
-        </ul>
-      </nav>
-      <small>Pinhal do Rei</small>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h4>Pinhal do Rei</h4>
+        <p>Explorando a herança natural, os recantos escondidos e as histórias do eterno pinhal de Leiria.</p>
+      </div>
+      <div class="footer-nav">
+        <nav>
+          <ul>
+            {% for item in navigation.footer %}
+            <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <small>&copy; 2024 Pinhal do Rei. Todos os direitos reservados.</small>
     </div>
   </footer>
 
   <button id="scroll-top" aria-label="Voltar ao topo" title="Voltar ao topo">↑</button>
   <script src="/assets/js/site.js"></script>
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.hidden = !mobileMenu.hidden;
+      });
+    }
+  </script>
 </body>
 </html>

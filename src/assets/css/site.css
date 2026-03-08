@@ -1,50 +1,84 @@
 /* --- Pico overrides / design tokens ----------------------- */
 :root {
-  --pico-font-family-sans-serif: 'Crimson Text', Georgia, serif;
-  --pico-font-family-headings: 'Playfair Display', Georgia, serif;
-  --pico-font-size: 1.2rem;
-  --pico-line-height: 1.75;
-  --pico-primary: #2e5c0e;
-  --pico-primary-hover: #245009;
-  --pico-primary-focus: rgba(46,92,14,.25);
+  --pico-font-family-sans-serif: 'Lora', 'Crimson Text', 'Merriweather', serif;
+  --pico-font-family-headings: 'Outfit', system-ui, -apple-system, sans-serif;
+  --pico-font-size: 1.15rem;
+  --pico-line-height: 1.7;
+  --pico-primary: #386f1b;
+  --pico-primary-hover: #2e5c0e;
+  --pico-primary-focus: rgba(56, 111, 27, 0.25);
   --pico-primary-inverse: #fff;
-  --pico-background-color: #f5f0e8;
+  --pico-background-color: #fcfbfa;
   --pico-card-background-color: #fff;
-  --pico-color: #2a2118;
-  --pico-muted-color: #7a6e62;
-  --pico-border-color: #e0d8cc;
+  --pico-color: #332d27;
+  --pico-muted-color: #8c8277;
+  --pico-border-color: #e8e3dc;
+  --hero-bg: url('/wp-content/uploads/2017/12/geral.jpg');
 }
 
 /* --- Header / Nav ----------------------------------------- */
 #site-header {
-  position: sticky; top: 0; z-index: 100;
-  background: linear-gradient(to bottom, #1a3409, #1e3a0f);
-  padding: 0;
+  position: absolute; /* Changed from sticky to absolute for a modern overlay look */
+  top: 0; left: 0; right: 0;
+  width: 100vw; /* Ensure full viewport width */
+  z-index: 100;
+  background: transparent;
+  padding: 1rem 2rem;
+  transition: background 0.3s ease, padding 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
-#site-header nav { --pico-nav-element-spacing-vertical: 0.75rem; }
-#site-header a, #site-header button { color: rgba(255,255,255,.85); }
-#site-header a:hover { color: #fff; }
+
+/* When scrolled (can add JS class later, but for now transparent overlay) */
+#site-header.scrolled {
+  position: fixed;
+  background: rgba(26, 52, 9, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 0.5rem 2rem;
+}
+
+#site-header nav { 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  --pico-nav-element-spacing-vertical: 0.5rem; 
+}
+#site-header ul { margin: 0; padding: 0; display: flex; align-items: center; gap: 2rem; list-style: none; }
+#site-header a, #site-header button { 
+  color: #fff; 
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+#site-header a:hover { color: var(--pico-primary-inverse); }
 .site-brand {
   font-family: var(--pico-font-family-headings);
-  font-style: italic;
-  font-size: 1.15rem !important;
+  font-style: normal;
+  font-size: 1.5rem !important;
   font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: none !important;
 }
-#menu-toggle { display: none; border: 1px solid rgba(255,255,255,.3); }
-#mobile-menu { background: #1e3a0f; padding: 0 1rem 1rem; }
+#menu-toggle { display: none; background: transparent; border: none; font-size: 1.5rem; color: #fff; }
+#mobile-menu { background: #1e3a0f; padding: 0 1rem 1rem; position: absolute; top: 100%; left: 0; width: 100%; }
 
 /* Nav underline hover */
 #site-header nav a:not(.site-brand) {
-  position: relative; padding-bottom: 2px;
+  position: relative; padding-bottom: 4px;
+  text-decoration: none; /* Prevent default Pico CSS underline */
 }
 #site-header nav a:not(.site-brand)::after {
   content: ''; position: absolute; bottom: 0; left: 0;
-  width: 0; height: 1px; background: rgba(255,255,255,.6);
-  transition: width .2s;
+  width: 0; height: 2px; background: #fff;
+  transition: width .3s ease;
 }
 #site-header nav a:not(.site-brand):hover::after { width: 100%; }
 
 @media (max-width: 768px) {
+  #site-header { padding: 1rem; }
   #site-header nav > ul:nth-child(2) { display: none; }
   #menu-toggle { display: block; }
 }
@@ -72,81 +106,189 @@
 }
 
 /* --- Homepage hero ---------------------------------------- */
+/* --- Homepage hero ---------------------------------------- */
 .home-hero {
   min-height: 100svh;
   display: flex; align-items: center;
-  background-image: url('/wp-content/uploads/2017/12/geral.jpg');
+  background-image: var(--hero-bg);
   background-size: cover; background-position: center;
   position: relative;
+  overflow: hidden;
+  padding-top: 80px; /* Offset for absolute header */
 }
-.home-hero::after {
+.home-hero::before {
   content: ''; position: absolute; inset: 0;
-  background: rgba(20,40,10,.5);
+  background: linear-gradient(135deg, rgba(20,40,10,0.85) 0%, rgba(20,40,10,0.4) 100%);
+  z-index: 0;
 }
-.home-hero .hero-content { position: relative; z-index: 1; color: #fff; }
+.home-hero .hero-content {
+  position: relative; z-index: 1; color: #fff;
+  display: flex; flex-direction: column; justify-content: center; align-items: center; /* Centered content */
+  height: 100%;
+  text-align: center; /* Centered text */
+}
+.hero-text-wrapper {
+  max-width: 900px;
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
 .home-hero h1 {
   color: #fff;
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.home-hero em {
+  font-size: clamp(1.2rem, 3.5vw, 1.6rem); /* Slightly larger */
+  line-height: 1.6;
+  opacity: 1; /* Full opacity */
+  color: #ffffff; /* Pure white instead of inheriting, for max contrast */
+  display: block;
+  font-family: var(--pico-font-family-sans-serif);
+  font-weight: 400; /* Regular instead of thin */
+  font-style: italic;
+  max-width: 800px; /* Constrain width for better readability when centered */
+  margin: 0 auto;
+  text-shadow: 0 4px 12px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.5); /* Stronger text shadow */
+}
+.home-hero .hero-attr {
+  font-size: 1.1rem; opacity: 1; color: #f4f9f0; /* Near white, high contrast */
+  font-variant: small-caps; letter-spacing: .08em;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  font-weight: 600;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8); /* Stronger text shadow */
+}
+.hero-cta {
+  background: var(--pico-primary) !important;
+  color: #fff !important;
+  border: none !important;
+  padding: 1rem 2rem !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  border-radius: 50px !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(56, 111, 27, 0.4);
+  display: inline-block;
+}
+.hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(56, 111, 27, 0.6);
+  background: var(--pico-primary-hover) !important;
+}
+
+/* --- Homepage sections & Grid ------------------------------- */
+.home-sections { padding: 6rem 0; }
+.home-sections-intro { text-align: center; margin-bottom: 4rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+.home-sections-intro h2 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: var(--pico-primary);
   margin-bottom: 1.5rem;
 }
-.home-hero em { font-size: 1.2rem; line-height: 1.6; opacity: .9; }
-.home-hero .hero-attr {
-  font-size: .9rem; opacity: .7;
-  font-variant: small-caps; letter-spacing: .05em;
-  margin-bottom: 2rem;
+.home-sections .lead {
+  font-size: 1.2rem;
+  color: var(--pico-muted-color);
+  line-height: 1.8;
 }
-.home-hero [role=button] { background: var(--pico-primary); color: #fff; border-color: var(--pico-primary); }
 
-/* --- Homepage sections ------------------------------------ */
-.home-sections { padding: 3rem 0 5rem; }
-.home-sections-intro { text-align: center; margin-bottom: 3rem; }
-.home-sections-intro h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
-.home-sections-intro h2::after {
-  content: ''; display: block;
-  width: 3rem; height: 2px;
-  background: var(--pico-primary);
-  margin: .75rem auto 0;
+/* Minimal Icon Feature Cards Grid */
+.features-grid {
+  display: flex; /* Changed from grid to flex for better centering of small static cards */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 0;
+  max-width: 1000px; /* Constrain width so it doesn't span full page */
+  margin: 0 auto; /* Center the container */
 }
-.home-sections .lead { color: var(--pico-muted-color); max-width: 640px; margin: 1rem auto 0; }
 
-/* Homepage feature rows */
-.home-feature {
-  display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 420px;
-  border-top: 1px solid var(--pico-border-color);
-}
-.home-feature--reverse { direction: rtl; }
-.home-feature--reverse > * { direction: ltr; }
-.home-feature-img img {
-  width: 100%; height: 100%;
-  object-fit: cover; display: block;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.05);
-}
-.home-feature-text {
-  padding: 3rem 4rem;
-  display: flex; flex-direction: column; justify-content: center;
-}
-.home-feature-text h3 {
-  font-size: clamp(1.4rem, 2.5vw, 2rem);
-  letter-spacing: -0.02em;
-  margin-bottom: 1rem;
-}
-.explore-link {
-  display: inline-block; margin-top: 1.5rem;
-  font-family: var(--pico-font-family-headings);
-  font-size: 1rem; font-weight: 600;
-  color: var(--pico-primary);
+.feature-card-link {
   text-decoration: none;
-  transition: letter-spacing .2s;
+  display: block; /* ensure it takes up cell space */
+  color: inherit;
+  flex: 0 1 300px;
 }
-.explore-link:hover { letter-spacing: .04em; color: var(--pico-primary-hover); }
+.feature-card-link:hover { color: inherit; text-decoration: none; }
 
-@media (max-width: 768px) {
-  .home-feature { grid-template-columns: 1fr; min-height: auto; }
-  .home-feature--reverse { direction: ltr; }
-  .home-feature-img { min-height: 260px; }
-  .home-feature-text { padding: 2rem 1.5rem; }
+.feature-card {
+  background: var(--pico-card-background-color);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--pico-border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.feature-card-link:hover .feature-card {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(56, 111, 27, 0.08);
+  border-color: rgba(56, 111, 27, 0.3);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  color: var(--pico-primary);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+.feature-card-link:hover .feature-icon {
+  transform: scale(1.1);
+  color: var(--pico-primary-hover);
+}
+
+.feature-card-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.feature-card-content h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--pico-color);
+}
+.feature-card-content p {
+  color: var(--pico-muted-color);
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  flex-grow: 1;
+}
+
+.feature-card--accent {
+  background: linear-gradient(180deg, #fff, #f8fbf6);
+}
+
+.explore-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--pico-font-family-headings);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--pico-primary);
+  text-decoration: none !important; /* Prevent Pico CSS double underline */
+  transition: all 0.2s ease;
+  margin-top: auto;
+  border-bottom: 1px solid transparent; /* controlled underline */
+}
+.explore-link:hover {
+  color: var(--pico-primary-hover);
+  border-bottom-color: var(--pico-primary-hover);
+  padding-bottom: 2px;
 }
 
 /* --- Typography ------------------------------------------- */
@@ -155,6 +297,47 @@ h1, h2, h3 { letter-spacing: -0.02em; }
 /* --- Content article -------------------------------------- */
 main.container { padding-top: 2.5rem; padding-bottom: 3rem; }
 main article { max-width: 740px; margin: 0 auto; }
+
+/* Global styling for article images (WordPress export cleanup) */
+main article img[class*="wp-image"],
+main article img[class*="attachment-"],
+main article img.aligncenter,
+main article img.alignleft,
+main article img.alignright {
+  max-width: 100%;
+  height: auto !important;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  margin: 2rem auto;
+  display: block;
+}
+main article .wp-caption {
+  padding: 0;
+  background: transparent;
+  border: none;
+  width: 100% !important; /* Override inline widths */
+  margin: 2rem auto;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}
+main article .wp-caption img {
+  margin: 0 !important; /* Overrides double margins */
+}
+main article .wp-caption-text {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--pico-muted-color);
+  font-style: italic;
+  margin-top: 0.8rem;
+  padding: 0 1rem;
+}
+main article .alignleft { float: none; margin: 2rem auto; display: block; }
+main article .alignright { float: none; margin: 2rem auto; display: block; }
+
+/* Override for section pages with grids to be wider */
+.layout-section main.container { max-width: 1200px; }
+.layout-section main article { max-width: 100%; }
 
 /* --- Info box (otw-sc-box) -------------------------------- */
 .otw-sc-box {
@@ -173,14 +356,187 @@ main article { max-width: 740px; margin: 0 auto; }
 }
 
 /* --- Galleries -------------------------------------------- */
-.gallery { margin: 1.5rem 0; }
-.gallery::after { content: ''; display: table; clear: both; }
-.gallery-item { float: left; padding: 4px; box-sizing: border-box; }
-.gallery-columns-2 .gallery-item { width: 50%; }
-.gallery-columns-3 .gallery-item { width: 33.333%; }
-.gallery-columns-1 .gallery-item { width: 100%; }
-.gallery-item img { width: 100%; border-radius: var(--pico-border-radius); }
-.gallery-caption { font-size: .8rem; color: var(--pico-muted-color); text-align: center; padding: 2px 4px; font-style: italic; }
+.gallery { margin: 2rem 0; display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+.gallery::after { display: none; } /* Clearfix no longer needed with flex */
+.gallery-item {
+  float: none !important;
+  padding: 0;
+  margin: 0 !important;
+  box-sizing: border-box;
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+}
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: none !important; /* override ugly WP borders */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  margin: 0 !important;
+}
+.gallery-caption { font-size: 0.9rem; color: var(--pico-muted-color); text-align: center; padding: 0.8rem 0; font-style: italic; }
+
+/* --- Footer ----------------------------------------------- */
+body > footer {
+  background: #1a2b10;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 4rem 2rem 2rem !important; /* Override Pico */
+  margin-top: 5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  max-width: 100% !important; /* Override Pico default container width */
+  width: 100%;
+}
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  margin-bottom: 3rem;
+  text-align: left;
+}
+.footer-brand {
+  flex: 1 1 300px;
+}
+.footer-brand h4 {
+  color: #fff;
+  font-family: var(--pico-font-family-headings);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+.footer-brand p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  max-width: 400px;
+  margin: 0;
+}
+.footer-nav {
+  flex: 1 1 300px;
+  display: flex;
+  justify-content: flex-end;
+}
+.footer-nav nav {
+  margin: 0; /* Reset pico margin */
+}
+.footer-nav ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+.footer-nav a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+.footer-nav a:hover {
+  color: #fff;
+}
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+.footer-bottom small {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  font-family: var(--pico-font-family-sans-serif);
+}
+
+@media (max-width: 768px) {
+  .footer-container { flex-direction: column; text-align: center; align-items: center; }
+  .footer-brand p { margin: 0 auto; }
+  .footer-nav { justify-content: center; }
+  .footer-nav ul { justify-content: center; flex-direction: column; gap: 1rem; }
+}
+
+/* --- Article Listing Grids (Secções) ---------------------- */
+.section-intro {
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--pico-color);
+}
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.article-card-link {
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  height: 100%;
+}
+.article-card-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
+.article-card {
+  background: var(--pico-card-background-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--pico-border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.article-card-link:hover .article-card {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(56, 111, 27, 0.08);
+  border-color: rgba(56, 111, 27, 0.3);
+}
+.article-card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f0f0f0; /* placeholder bg */
+}
+.article-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.article-card-link:hover .article-card-image img {
+  transform: scale(1.05);
+}
+.article-card-content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.article-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--pico-h2-color);
+  transition: color 0.3s ease;
+}
+.article-card-link:hover .article-title {
+  color: var(--pico-primary);
+}
 
 /* --- Scroll to top ---------------------------------------- */
 #scroll-top {
@@ -191,3 +547,74 @@ main article { max-width: 740px; margin: 0 auto; }
   transition: opacity .2s;
 }
 #scroll-top.visible { opacity: 1; visibility: visible; }
+
+/* --- Authors Grid (Equipa) -------------------------------- */
+.author-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.author-card {
+  background: var(--pico-card-background-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid var(--pico-border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  height: 100%;
+}
+.author-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(56, 111, 27, 0.08);
+  border-color: rgba(56, 111, 27, 0.3);
+}
+.author-image {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.author-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+.author-card:hover .author-image img {
+  transform: scale(1.08);
+}
+.author-name {
+  font-family: var(--pico-font-family-headings);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--pico-color);
+  margin-top: 0;
+  margin-bottom: 0.2rem;
+}
+.author-initials {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pico-primary);
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+  background: rgba(56, 111, 27, 0.08);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+.author-role {
+  font-size: 0.95rem;
+  color: var(--pico-muted-color);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
